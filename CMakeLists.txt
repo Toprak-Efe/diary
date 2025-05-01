@@ -10,7 +10,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 set(SQLITE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/sqlite")
-add_library(sqlite3_static SHARED
+add_library(sqlite3_static STATIC
     "${SQLITE_SOURCE_DIR}/sqlite3.c"
 )
 target_include_directories(sqlite3_static PUBLIC
@@ -29,4 +29,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE sqlite3_static)
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+install(TARGETS ${CMAKE_PROJECT_NAME})
 
