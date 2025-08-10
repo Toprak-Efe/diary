@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 4.0.0)
 project(diary LANGUAGES CXX C)
 
+include(GNUInstallDirs)
 include(ExternalProject)
 include(FetchContent)
 
@@ -66,6 +67,15 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     PRIVATE sqlite3_static
     PRIVATE ftxui::screen
     PRIVATE ftxui::dom
-    PRIVATE ftxui::component  # Not needed for this example.
+    PRIVATE ftxui::component  
 )
+
+install(FILES assets/diary.desktop
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/applications
+)
+
+install(FILES assets/diary.svg
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps
+)
+
 

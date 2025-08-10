@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Diary
+Comment=Terminal logging app for Linux
+TryExec=diary
+Exec=diary
+Icon=diary
+Categories=ConsoleOnly
+Terminal=true
