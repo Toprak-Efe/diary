@@ -4,34 +4,7 @@
 namespace db {
 
 SQLite::SQLite() {
-    std::filesystem::path database;
-    if (const char *s_home = getenv("HOME")) {
-        std::filesystem::path database_dir = std::filesystem::path(s_home) / ".diary";
-        if (!std::filesystem::is_directory(database_dir)) {
-            std::filesystem::create_directory(database_dir);
-        }
-        database = database_dir / "diary.sqlite";
-    } else {
-        std::cerr << "Unable to find HOME, exiting.\n";
-        exit(1);
-    }
-    if (sqlite3_open(database.c_str(), &m_sqlite_handle)) {
-        std::cerr << "Unable to start database, SQLite error:\n" << sqlite3_errmsg(m_sqlite_handle) << '\n';
-        sqlite3_close(m_sqlite_handle);
-        exit(1);
-    } 
-    char *err = nullptr;
-    std::string sql =
-        "CREATE TABLE IF NOT EXISTS Diary ("
-        "id    INTEGER NOT NULL PRIMARY KEY,"
-        "date  TEXT NOT NULL UNIQUE,"
-        "entry TEXT"
-        ");";
-    if (sqlite3_exec(m_sqlite_handle, sql.c_str(), nullptr, nullptr, &err) != SQLITE_OK) {
-        std::cerr << "Unable to run SQL, SQLite error:\n" << err << '\n';
-        sqlite3_free(err);
-        exit(1);
-    }
+    initializeDatabase();
 }
 
 SQLite::~SQLite() {
@@ -109,6 +82,46 @@ void SQLite::setEntry(const std::string &date, const std::string &entry) {
         default:
             std::cerr << "Unable to prepare statement, error.";
             exit(1);
+    }
+}
+
+std::filesystem::path SQLite::getDatabase() {
+    return m_database; 
+}
+
+void SQLite::purgeDatabase() {
+    sqlite3_close(m_sqlite_handle);
+    std::filesystem::remove(m_database); 
+    initializeDatabase();
+}
+
+void SQLite::initializeDatabase() {
+    if (const char *s_home = getenv("HOME")) {
+        std::filesystem::path database_dir = std::filesystem::path(s_home) / ".diary";
+        if (!std::filesystem::is_directory(database_dir)) {
+            std::filesystem::create_directory(database_dir);
+        }
+        m_database = database_dir / "diary.sqlite";
+    } else {
+        std::cerr << "Unable to find HOME, exiting.\n";
+        exit(1);
+    }
+    if (sqlite3_open(m_database.c_str(), &m_sqlite_handle)) {
+        std::cerr << "Unable to start database, SQLite error:\n" << sqlite3_errmsg(m_sqlite_handle) << '\n';
+        sqlite3_close(m_sqlite_handle);
+        exit(1);
+    } 
+    char *err = nullptr;
+    std::string sql =
+        "CREATE TABLE IF NOT EXISTS Diary ("
+        "id    INTEGER NOT NULL PRIMARY KEY,"
+        "date  TEXT NOT NULL UNIQUE,"
+        "entry TEXT"
+        ");";
+    if (sqlite3_exec(m_sqlite_handle, sql.c_str(), nullptr, nullptr, &err) != SQLITE_OK) {
+        std::cerr << "Unable to run SQL, SQLite error:\n" << err << '\n';
+        sqlite3_free(err);
+        exit(1);
     }
 }
 

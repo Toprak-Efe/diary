@@ -18,7 +18,12 @@ public:
     std::vector<std::string> getEntries();
     std::string getEntry(const std::string &date);
     void setEntry(const std::string &date, const std::string &entry);
+    std::filesystem::path getDatabase();
+    void purgeDatabase();
 private:
+    void initializeDatabase();
+private:
+    std::filesystem::path m_database;
     sqlite3 *m_sqlite_handle;
 };
 

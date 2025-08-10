@@ -15,6 +15,7 @@ endif()
 # --- Main Executable --------------------------------------------------------- 
 add_executable(${CMAKE_PROJECT_NAME}
     source/main.cpp
+    source/menu.cpp
     source/utils.cpp
     source/editor.cpp
     source/db.cpp
@@ -45,7 +46,6 @@ ExternalProject_Add(
     CONFIGURE_COMMAND <SOURCE_DIR>/configure
     BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} sqlite3.c
     INSTALL_COMMAND ""
-    DOWNLOAD_COMMAND ""
     UPDATE_COMMAND ""
     BUILD_BYPRODUCTS ${SQLITE_C_FILE} ${SQLITE_H_FILE}
 )
