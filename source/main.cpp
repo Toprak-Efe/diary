@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
                 " Addition"
             }; 
             std::vector<std::string> entry_items = db::g_sqlite_handle.getEntries();
-            for_each(entry_items.begin(), entry_items.end(), [&](std::string &s){ if (s != "0") menu_items.emplace_back("󰉋 " + s); });
+            for_each(entry_items.begin(), entry_items.end(), [&](std::string &s){ menu_items.emplace_back("󰉋 " + s); });
             int selected = menu::select(menu_items);
             std::string date, contents;
             switch (selected) {
