@@ -15,7 +15,7 @@ std::vector<std::string> SQLite::getEntries() {
     std::vector<std::string> results = {};
 
     sqlite3_stmt *statement = nullptr;
-    int rc = sqlite3_prepare_v2(m_sqlite_handle, "SELECT * FROM Diary WHERE Date != 0", -1, &statement, nullptr);
+    int rc = sqlite3_prepare_v2(m_sqlite_handle, "SELECT * FROM Diary WHERE Date != \'0\'", -1, &statement, nullptr);
     rc = sqlite3_step(statement);
     
     while (rc==SQLITE_ROW) {
