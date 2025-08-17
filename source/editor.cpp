@@ -8,6 +8,7 @@ namespace editor {
         std::string temp_template_string = temp_template.string();
         char *temp_template_str = temp_template_string.data();
         const char *directory_temp_name = mkdtemp(temp_template_str);
+        m_tempdir_path = directory_temp_name; 
     }
 
     Program::~Program() {
